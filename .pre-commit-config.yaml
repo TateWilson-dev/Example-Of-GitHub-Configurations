@@ -1,0 +1,16 @@
+repos:
+  # Runs at COMMIT time: scans staged changes, blocks the commit on a secret
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  # Runs at PUSH time: full history scan, blocks the push on a secret
+  - repo: local
+    hooks:
+      - id: gitleaks-prepush
+        name: gitleaks full scan before push
+        entry: gitleaks git --redact
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
